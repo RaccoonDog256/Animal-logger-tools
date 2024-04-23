@@ -97,6 +97,31 @@ export function activate(context: vscode.ExtensionContext) {
   button2.text = "console";
   context.subscriptions.push(button2);
   button2.show();
+
+  /** ↓↓JSdoc化--------------------------------------------------------------------------------------------------------------------------↓↓ */
+  let disposable3 = vscode.commands.registerCommand("jsdoc", function () {
+    const editor = vscode.window.activeTextEditor;
+    if (editor) {
+      const selection = editor.selection;
+      const text = editor.document.getText(selection);
+      // 各行を配列として取得し、先頭の空白を削除
+      const lines = text.split("\n").map((line) => line.trimStart());
+      // 最長の行を見つける
+      const maxLength = Math.max(...lines.map((line) => line.length));
+      // 全行のフォーマットを合わせる
+      const paddedLines = lines.map((line) => {
+        const paddingSpace = " ".repeat(maxLength + 5 - line.length);
+        return `//  ${line}${paddingSpace}-${"-".repeat(140)}`;
+      });
+      // 更新されたテキストをドキュメントに挿入
+      editor.edit((editBuilder) => {
+        editBuilder.replace(selection, paddedLines.join("\n"));
+      });
+    }
+  });
+
+  context.subscriptions.push(disposable3);
+  // ↑↑JSdoc化--------------------------------------------------------------------------------------------------------------------------↑↑
 }
 
 export function deactivate() {}

@@ -22,6 +22,10 @@
       {
         "command": "console-kawaii.insertSole",
         "title": "Insert 'console.log()'"
+      },
+      {
+        "command": "jsdoc",
+        "title": "jsdoc"
       }
     ]
   },
